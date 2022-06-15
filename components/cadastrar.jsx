@@ -27,6 +27,7 @@ export default function Cadastrar(){
                 SetEmail('');
                 SetTel('');
                 SetMensagem('');
+                window.location.reload();
                 read();
              });
     }
@@ -35,11 +36,21 @@ export default function Cadastrar(){
     return(
         <>
             <h3 className="text-center"> Cadastrar </h3> 
+            
+            {/* Nome */}
             <input type="text" placeholder="Nome" className="form-control" required onChange={event=>SetNome(event.target.value)} value={nome} /> <br/>
+            
+            {/* EMail */}
             <input type="email" placeholder="Email" className="form-control" required onChange={event=>SetEmail(event.target.value)} value={email} /> <br/>
+            
+            {/* Telefone */}
             <input type="tel" placeholder="Telefone" className="form-control" required onChange={event=>SetTel(event.target.value)} value={tel} /> <br/>
+            
+            {/* Mensagem */}
             <textarea placeholder="Mensagem" className="form-control" required onChange={event=>SetMensagem(event.target.value)} value={mensagem} ></textarea> <br/>
-            <input type="submit" value="Salvar" className="btn btn-outline-dark" onClick={create} />
+            
+            {/* Botão */}
+            <input type="submit" value="Salvar" className="btn btn-outline-dark form-control" onClick={create} />
         </>
     );
 }

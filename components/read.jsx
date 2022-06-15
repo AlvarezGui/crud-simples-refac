@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, getDocs, orderBy, query, doc, deleteDoc } from 'firebase/firestore';
 import {app, database} from '../services/firebase';
 
 //definir a coleção
@@ -10,7 +10,7 @@ export default function Read(){
     //read
     const [lista, setLista] = useState([]);
     const read = ()=>{
-        getDocs(contato)
+        getDocs(query(contato, orderBy("nome")))
         .then((data)=>{
             setLista(data.docs.map((item)=>{
             return{...item.data(), id:item.id};
@@ -23,6 +23,15 @@ export default function Read(){
     useEffect(()=>{
         read();
     },[]);
+
+    //excluir
+    const deleteBtn = (id) =>{
+      const documento = doc(database, "contato", id);
+      deleteDoc(documento)
+      .then(() =>{
+        read();
+      });
+    }
 
     return(
         <>
@@ -37,6 +46,7 @@ export default function Read(){
                     Id: {lista.id}
                   </div>
 
+                  {/* info */}
                   <div className="card-body">
                     <p className="card-title text-info">Nome: {lista.nome}</p>
                     <p className="card-subtitle">Email: {lista.email}</p>
@@ -44,10 +54,11 @@ export default function Read(){
                     <p className="card-subtitle">Mensagem: {lista.mensagem}</p>
                   </div>
 
+                  {/* botoes */}
                   <div className="card-footer">
                     <div className="input-group">
                       <input type="button" value="Alterar" className="btn btn-outline-warning form-control" />
-                      <input type="button" value="Excluir" className="btn btn-outline-danger form-control" />
+                      <input type="button" value="Excluir" onClick={()=>deleteBtn(lista.id)} className="btn btn-outline-danger form-control" />
                     </div>
                   </div>
                 </div>
