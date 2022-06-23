@@ -28,9 +28,7 @@ export default function Read(){
     const deleteBtn = (id) =>{
       const documento = doc(database, "contato", id);
       deleteDoc(documento)
-      .then(() =>{
-        read();
-      });
+      .then(() =>{ read(); });
     }
 
     //update - mostrar contato selecionado
@@ -53,14 +51,20 @@ export default function Read(){
         SetTelefone(contatoUnico.telefone);
         SetMensagem(contatoUnico.mensagem);
       }
-      if(mensagem != ""){
-        setMostrar(true);
-      }
+
+      if(mensagem != "") setMostrar(true); //provisório????
     }
 
-    useEffect(() =>{
-      show();
-    }, [ID]);
+    useEffect(() =>{ show(); }, [ID]);
+
+    const bt_cancelar = () =>{
+      setMostrar(false);
+      SetNome("");
+      SetEmail("");
+      SetTelefone("");
+      SetMensagem("");
+      setID(null);
+    }
 
     return(
         <>
@@ -82,6 +86,7 @@ export default function Read(){
               
               {/* Botão */}
               <input type="submit" value="Salvar" className="btn btn-outline-dark form-control" />
+              <input type="submit" value="Cancelar" className="btn btn-outline-danger form-control" onClick={bt_cancelar} />
               </div>
           ):(
             <></>
