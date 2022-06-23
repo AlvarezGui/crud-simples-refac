@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { collection, addDoc, getDocs, orderBy, query, doc, deleteDoc, getDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, orderBy, query, doc, deleteDoc, getDoc, updateDoc } from 'firebase/firestore';
 import {app, database} from '../services/firebase';
 
 //definir a coleção
@@ -66,6 +66,25 @@ export default function Read(){
       setID(null);
     }
 
+    const bt_alterar = (id) =>{
+      const contatoShow = doc(database, 'contato', id);
+      updateDoc(contatoShow, {
+        nome:nome,
+        email:email,
+        telefone:telefone,
+        mensagem:mensagem
+      })
+      .then(() =>{
+        SetNome("");
+        SetEmail("");
+        SetTelefone("");
+        SetMensagem("");
+        setID(null);
+        read();
+        setMostrar(false);
+      });
+    }
+
     return(
         <>
           {mostrar ?(
@@ -85,7 +104,7 @@ export default function Read(){
               <textarea placeholder="Mensagem" className="form-control" required onChange={event=>SetMensagem(event.target.value)} value={mensagem} ></textarea> <br/>
               
               {/* Botão */}
-              <input type="submit" value="Salvar" className="btn btn-outline-dark form-control" />
+              <input type="submit" value="Salvar" className="btn btn-outline-dark form-control" onClick={()=> bt_alterar(contatoUnico.id)} />
               <input type="submit" value="Cancelar" className="btn btn-outline-danger form-control" onClick={bt_cancelar} />
               </div>
           ):(
